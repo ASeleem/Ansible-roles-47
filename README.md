@@ -5,7 +5,6 @@
 
 
 # Users Role
-===================
 Role to manage users on linux.
 
 ## Distros tested
@@ -183,8 +182,6 @@ ansible-playbook users.yaml --ask-vault-pass -i hosts.ini
 
 
 # Tomcat Role
-===================
-
 Ansible role to install and configure Apache Tomcat.
 
 
