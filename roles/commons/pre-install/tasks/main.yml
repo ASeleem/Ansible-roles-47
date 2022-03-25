@@ -1,0 +1,23 @@
+---
+
+# firewall config
+
+- name: Check Firewalld is present
+  yum:
+    name: firewalld
+    state: present
+
+- name: Permit traffic in default zone on port "{{ tomcat_port_connector }}"/tcp
+  firewalld:
+    port: "{{ item|string  + '/tcp'}}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  with_items:
+    - "{{ tomcat_port_connector }}"
+    - "{{ tomcat_port_redirect }}"
+
+- name: Restart FirewallD
+  ansible.builtin.service:
+    name: firewalld
+    state: restarted

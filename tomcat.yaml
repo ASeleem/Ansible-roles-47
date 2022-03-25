@@ -1,0 +1,28 @@
+- hosts: webserver
+  become: true
+  vars:
+    tomcat_version: 8.5.40
+
+    tomcat_permissions_production: True
+
+    tomcat_listen_address: 0.0.0.0
+    tomcat_port_connector: 9095
+    tomcat_port_shutdown: 9091
+    tomcat_port_redirect: 9096
+    tomcat_port_ajp: 9092
+    tomcat_port_debug: 9090
+
+    tomcat_user_roles:
+      - tomcat
+      - admin
+      - manager
+      - manager-gui
+      - admin-gui
+    tomcat_users:
+      - username: "dell-tomcat"
+        password: "De||@ssw0rd"
+        roles: "tomcat,admin,manager,manager-gui,admin-gui"
+    tomcat_sitename: "Dell Technology"
+    tomcat_aboutmessage: "Testiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing"
+  roles:
+    - role: tomcat

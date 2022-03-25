@@ -1,0 +1,18 @@
+---
+# tasks file for tomcat
+
+- name: Install tomcat
+  include: install.yml
+  when: tomcat_state == "present"
+
+- name: Configure tomcat
+  include: configure.yml
+  when: tomcat_state == "present"
+
+- name: Deploy a simple app
+  include: deploy.yml
+  when: tomcat_state == "present"
+
+- name: Uninstall tomcat
+  include: uninstall.yml
+  when: tomcat_state == "absent"

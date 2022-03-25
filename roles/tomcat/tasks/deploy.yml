@@ -1,0 +1,34 @@
+---
+# tasks file for tomcat
+- name: Ensure directory structure exists
+  file:
+    path: '{{ tomcat_install_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT/{{ item.path }}'
+    state: directory
+  with_filetree: '{{ tomcat_simple_site }}'
+  when: item.state == 'directory'
+- name: Deploy a simple app
+  template:
+    src: "{{ item.src }}"
+    owner: tomcat
+    group: tomcat
+    dest: "{{ tomcat_install_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT/{{ item.path }}"
+  with_filetree: '{{ tomcat_simple_site }}'
+  when: item.state == 'file'
+- name: copying files
+  copy:
+    src: ../files/app/
+    dest: "{{ tomcat_install_path }}/apache-tomcat-{{ tomcat_version }}/webapps/ROOT"
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+- name: Set production permissions
+  include: set-production-permissions.yml
+  when: >
+    (tomcat_installed is changed or tomcat_permissions_ensure_on_every_run) and
+    tomcat_permissions_production
+
+- name: Set non production permissions
+  include: set-non-production-permissions.yml
+  when: >
+    (tomcat_installed is changed or tomcat_permissions_ensure_on_every_run) and
+    not tomcat_permissions_production
